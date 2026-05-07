@@ -1,351 +1,452 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ru êm — Ngủ ngon tròn giấc</title>
-  <link rel="manifest" href="manifest.json"/>
-  <meta name="theme-color" content="#060b14"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="manifest" href="/images/favicon/site.webmanifest">
+  <meta name="theme-color" content="#060b14" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Nunito:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
 </head>
+
 <body>
-<canvas id="stars-canvas"></canvas>
-<div id="moon-orb"></div>
-<div id="fog-overlay"></div>
-<div id="app">
+  <canvas id="stars-canvas"></canvas>
+  <div id="moon-orb"></div>
+  <div id="fog-overlay"></div>
+  <div id="app">
 
-<!-- ══ HOME ══ -->
-<div class="view active" id="view-home">
-  <div class="home-header">
-    <div class="app-logo">
-      <img src="images/logo.png" alt="Ruem — Ngủ ngon tròn giấc"/>
-    </div>
-    <p class="greeting" id="greeting-text">Chào buổi tối ✦</p>
-    <h1 class="display" id="display-text">Chúc ngủ ngon,<br/><em>hãy để cơ thể nghỉ ngơi.</em></h1>
-  </div>
-
-  <div class="card mb-24">
-    <div class="readiness-row">
-      <div>
-        <div style="font-size:13px;color:var(--muted);margin-bottom:2px">Sleep Readiness</div>
-        <div class="readiness-score" id="home-readiness-score">0</div>
-        <div style="font-size:12px;color:var(--muted)" id="home-readiness-label">Hãy bắt đầu wind-down routine</div>
+    <!-- ══ HOME ══ -->
+    <div class="view active" id="view-home">
+      <div class="home-header">
+        <div class="app-logo">
+          <img src="images/logo.png" alt="Ruem — Ngủ ngon tròn giấc" />
+        </div>
+        <p class="greeting" id="greeting-text">Chào buổi tối ✦</p>
+        <h1 class="display" id="display-text">Chúc ngủ ngon,<br /><em>hãy để cơ thể nghỉ ngơi.</em></h1>
       </div>
-      <div style="font-size:40px;opacity:.6">🌙</div>
-    </div>
-    <div class="bar-track"><div class="bar-fill" id="home-bar" style="width:0%"></div></div>
-    <div style="margin-top:12px">
-      <button class="btn btn-sm" onclick="navigate('sleep');switchSleepTab('winddown')">Bắt đầu Wind-down →</button>
-    </div>
-  </div>
 
-  <div class="r90-strip">
-    <span class="badge">R90 Method</span>
-    <h3>Bạn nên ngủ lúc mấy giờ?</h3>
-    <p id="r90-home-text">Tính chu kỳ ngủ tối ưu theo phương pháp 90 phút</p>
-    <div class="mt-12">
-      <button class="btn btn-ghost" onclick="navigate('sleep');switchSleepTab('r90')">Tính ngay →</button>
-    </div>
-  </div>
-
-  <p class="section-label">Bắt đầu ngay</p>
-  <div class="quick-actions">
-    <div class="quick-card" onclick="navigate('breathing')">
-      <div class="icon">🫁</div>
-      <div class="title">Thở 4-7-8</div>
-      <div class="desc">Thư giãn hệ thần kinh, ngủ trong 2 phút</div>
-    </div>
-    <div class="quick-card" onclick="navigate('mixer')">
-      <div class="icon">🎚️</div>
-      <div class="title">Sound Mixer</div>
-      <div class="desc">Trộn âm thanh yêu thích của bạn</div>
-    </div>
-    <div class="quick-card" onclick="navigate('shuffle')">
-      <div class="icon">🌀</div>
-      <div class="title">Cognitive Shuffle</div>
-      <div class="desc">Ngắt vòng suy nghĩ, ngủ nhanh hơn</div>
-    </div>
-    <div class="quick-card" onclick="navigate('sleep');switchSleepTab('winddown')">
-      <div class="icon">🌅</div>
-      <div class="title">Wind-down</div>
-      <div class="desc">Chuẩn bị cơ thể và tinh thần trước khi ngủ</div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ BREATHING ══ -->
-<div class="view" id="view-breathing">
-  <h2 class="display mt-16 mb-16">Hướng dẫn thở</h2>
-  <div class="breath-selector" id="breath-selector">
-    <button class="breath-chip active" data-method="478">4-7-8</button>
-    <button class="breath-chip" data-method="box">Box Breathing</button>
-    <button class="breath-chip" data-method="relax">Thư giãn</button>
-  </div>
-  <div class="breath-center">
-    <div class="breath-info">
-      <div class="method-name" id="method-name">Kỹ thuật 4-7-8</div>
-      <div class="method-desc" id="method-desc">Hít 4 · Nín 7 · Thở ra 8</div>
-    </div>
-    <div class="breath-ring-wrap">
-      <div class="breath-ring" id="breath-ring">
-        <div class="breath-inner" id="breath-inner">
-          <div class="breath-phase" id="breath-phase">Sẵn sàng</div>
-          <div class="breath-count" id="breath-count">—</div>
+      <div class="card mb-24">
+        <div class="readiness-row">
+          <div>
+            <div style="font-size:13px;color:var(--muted);margin-bottom:2px">Sẵn sàng cho giấc ngủ</div>
+            <div class="readiness-score" id="home-readiness-score">0</div>
+            <div style="font-size:12px;color:var(--muted)" id="home-readiness-label">Hãy bắt đầu wind-down routine</div>
+          </div>
+          <div style="font-size:40px;opacity:.6">🌙</div>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" id="home-bar" style="width:0%"></div>
+        </div>
+        <div style="margin-top:12px">
+          <button class="btn btn-sm" onclick="navigate('sleep');switchSleepTab('winddown')">Bắt đầu Thư giãn →</button>
         </div>
       </div>
-    </div>
-    <div class="breath-controls">
-      <button class="btn btn-icon" id="breath-toggle" onclick="toggleBreath()">▶</button>
-      <button class="btn btn-ghost" onclick="resetBreath()">Đặt lại</button>
-      <button class="btn btn-icon" id="breath-cue-toggle" onclick="toggleBreathCue()" title="Bật/tắt âm thanh dẫn">🔊</button>
-    </div>
-    <div class="cycle-counter" id="cycle-counter" style="display:none">
-      <span id="cycle-text">Chu kỳ 1 / 4</span>
-      <div class="cycle-dots" id="cycle-dots"></div>
-    </div>
-  </div>
-  <div class="card mt-24">
-    <p style="font-size:13px;color:var(--muted);line-height:1.6">
-      <strong style="color:var(--text)">Tại sao hiệu quả?</strong><br/>
-      Kỹ thuật này kích hoạt hệ thần kinh phó giao cảm, giảm cortisol và nhịp tim. Thực hành đều 4 chu kỳ mỗi đêm để thấy hiệu quả rõ rệt.
-    </p>
-  </div>
-</div>
 
-<!-- ══ MIXER ══ -->
-<div class="view" id="view-mixer">
-  <div class="mixer-header">
-    <h2 class="display mt-16">Sound Mixer</h2>
-    <p style="font-size:13px;color:var(--muted);margin-top:6px">Trộn nhiều âm thanh để tạo môi trường ngủ riêng của bạn</p>
-  </div>
-
-  <p class="section-label">Playlist có sẵn</p>
-  <div class="preset-cards" id="preset-cards">
-    <div class="preset-card" data-preset="ngu-sau"    onclick="loadPreset('ngu-sau')">   <div class="preset-icon">😴</div><div class="preset-label">Ngủ sâu</div></div>
-    <div class="preset-card" data-preset="tap-trung"  onclick="loadPreset('tap-trung')"> <div class="preset-icon">🎯</div><div class="preset-label">Tập trung</div></div>
-    <div class="preset-card" data-preset="hoc-bai"    onclick="loadPreset('hoc-bai')">   <div class="preset-icon">📚</div><div class="preset-label">Học bài</div></div>
-    <div class="preset-card" data-preset="thien-dinh" onclick="loadPreset('thien-dinh')"><div class="preset-icon">🧘</div><div class="preset-label">Thiền định</div></div>
-    <div class="preset-card" data-preset="thu-gian"   onclick="loadPreset('thu-gian')">  <div class="preset-icon">🌿</div><div class="preset-label">Thư giãn</div></div>
-    <div class="preset-card" data-preset="ca-phe"     onclick="loadPreset('ca-phe')">    <div class="preset-icon">☕</div><div class="preset-label">Cà phê</div></div>
-    <div class="preset-card" data-preset="sang-tao"   onclick="loadPreset('sang-tao')">  <div class="preset-icon">✨</div><div class="preset-label">Sáng tạo</div></div>
-    <div class="preset-card" data-preset="mua-dem"    onclick="loadPreset('mua-dem')">   <div class="preset-icon">🌧️</div><div class="preset-label">Mưa đêm</div></div>
-    <div class="preset-card" data-preset="rung-dem"   onclick="loadPreset('rung-dem')">  <div class="preset-icon">🔥</div><div class="preset-label">Rừng đêm</div></div>
-    <div class="preset-card" data-preset="chan-on"    onclick="loadPreset('chan-on')">    <div class="preset-icon">🚫</div><div class="preset-label">Chặn ồn</div></div>
-  </div>
-
-  <p class="section-label">Thư viện âm thanh</p>
-  <div class="sound-library" id="sound-library"><!-- JS render --></div>
-
-  <p class="section-label">Mix hiện tại</p>
-  <div class="mix-tracks" id="mix-tracks">
-    <div class="empty-mix" id="empty-mix">Chưa có âm thanh nào.<br/>Chọn từ thư viện phía trên để bắt đầu ✦</div>
-  </div>
-
-  <div class="mixer-controls" id="mixer-controls" style="display:none">
-    <div style="display:flex;align-items:center;gap:8px;flex:1">
-      <span style="font-size:13px;color:var(--muted)">🔊</span>
-      <input type="range" id="master-vol" min="0" max="100" value="70" oninput="setMasterVol(this.value)"/>
-      <span style="font-size:13px;color:var(--muted);min-width:28px" id="master-vol-val">70</span>
-    </div>
-  </div>
-
-  <div style="margin-top:12px;margin-bottom:8px">
-    <p class="section-label">Hẹn giờ tắt</p>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="timer-chip" onclick="setMixTimer(15,this)">15p</button>
-      <button class="timer-chip" onclick="setMixTimer(30,this)">30p</button>
-      <button class="timer-chip" onclick="setMixTimer(45,this)">45p</button>
-      <button class="timer-chip" onclick="setMixTimer(60,this)">60p</button>
-      <button class="timer-chip" onclick="stopMixTimer(this)">Tắt hẹn giờ</button>
-    </div>
-    <div id="mix-timer-display" style="font-size:13px;color:var(--accent);margin-top:10px;display:none"></div>
-  </div>
-</div>
-
-<!-- ══ SLEEP (R90 + WIND-DOWN) ══ -->
-<div class="view" id="view-sleep">
-  <div class="sleep-tabs">
-    <button class="sleep-tab active" id="tab-r90" onclick="switchSleepTab('r90')">🌙 Chu kỳ R90</button>
-    <button class="sleep-tab" id="tab-winddown" onclick="switchSleepTab('winddown')">🌅 Wind-down</button>
-  </div>
-
-  <!-- R90 Panel -->
-  <div id="panel-r90">
-    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6">
-      Mỗi chu kỳ ngủ kéo dài <strong style="color:var(--accent)">90 phút</strong>. Tỉnh dậy đúng cuối chu kỳ giúp bạn tỉnh táo hơn dù ngủ ít hơn.
-    </p>
-    <div class="time-input-wrap">
-      <label>🔔 Tôi cần thức dậy lúc:</label>
-      <div class="time-picker">
-        <select id="wake-hour">
-          <option value="4">04</option><option value="5">05</option>
-          <option value="6" selected>06</option><option value="7">07</option>
-          <option value="8">08</option><option value="9">09</option>
-          <option value="10">10</option><option value="11">11</option>
-        </select>
-        <span class="colon">:</span>
-        <select id="wake-min">
-          <option value="0">00</option><option value="15">15</option>
-          <option value="30">30</option><option value="45">45</option>
-        </select>
-      </div>
-    </div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Tôi muốn ngủ bao nhiêu chu kỳ?</p>
-    <div class="cycles-row">
-      <div class="cycle-opt" data-c="3" onclick="selectCycle(3,this)"><div class="c-num">3</div><div class="c-label">4.5h</div></div>
-      <div class="cycle-opt" data-c="4" onclick="selectCycle(4,this)"><div class="c-num">4</div><div class="c-label">6h</div></div>
-      <div class="cycle-opt active" data-c="5" onclick="selectCycle(5,this)"><div class="c-num">5</div><div class="c-label">7.5h</div></div>
-      <div class="cycle-opt" data-c="6" onclick="selectCycle(6,this)"><div class="c-num">6</div><div class="c-label">9h</div></div>
-    </div>
-    <button class="btn btn-primary full-w" onclick="calcR90()">Tính giờ ngủ →</button>
-    <div class="results-list mt-20" id="r90-results"></div>
-    <div class="card mt-16">
-      <p style="font-size:13px;color:var(--muted);line-height:1.6">💡 <strong style="color:var(--text)">Mẹo:</strong> App đã tính sẵn 14 phút để chìm vào giấc ngủ. Sau khi tính xong, hãy chuyển sang Wind-down để chuẩn bị.</p>
-    </div>
-  </div>
-
-  <!-- Wind-down Panel -->
-  <div id="panel-winddown" style="display:none">
-    <div class="winddown-hero">
-      <div class="readiness-big" id="wd-score">0</div>
-      <div class="readiness-label">Sleep Readiness Score</div>
-      <div class="wd-bar-track"><div class="wd-bar-fill" id="wd-bar" style="width:0%"></div></div>
-      <p style="font-size:12px;color:var(--muted);margin-top:4px" id="wd-status-text">Hoàn thành các bước bên dưới để tăng điểm</p>
-    </div>
-
-    <div class="bedtime-row">
-      <label>🛏 Dự định ngủ lúc:</label>
-      <select id="wd-hour">
-        <option value="20">20</option><option value="21">21</option>
-        <option value="22">22</option><option value="23" selected>23</option>
-        <option value="0">00</option><option value="1">01</option>
-      </select>
-      <span style="color:var(--muted)">:</span>
-      <select id="wd-min">
-        <option value="0" selected>00</option><option value="30">30</option>
-      </select>
-      <button class="btn btn-sm" onclick="startWinddown()">Bắt đầu</button>
-    </div>
-
-    <div class="timeline-list" id="timeline-list">
-      <div class="timeline-item" data-idx="0" onclick="toggleTask(0)">
-        <div class="tl-check" id="check-0"></div>
-        <div class="tl-content">
-          <div class="tl-time">60 PHÚT TRƯỚC</div>
-          <div class="tl-title">☕ Ngừng caffeine & rượu</div>
-          <div class="tl-desc">Caffeine tồn tại trong cơ thể 6–8 giờ. Uống trà thảo mộc hoặc nước ấm thay thế.</div>
-          <div class="tl-countdown" id="cd-0"></div>
+      <div class="r90-strip">
+        <span class="badge">R90 Method</span>
+        <h3>Bạn nên ngủ lúc mấy giờ?</h3>
+        <p id="r90-home-text">Tính chu kỳ ngủ tối ưu theo phương pháp 90 phút</p>
+        <div class="mt-12">
+          <button class="btn btn-ghost" onclick="navigate('sleep');switchSleepTab('r90')">Tính ngay →</button>
         </div>
       </div>
-      <div class="timeline-item" data-idx="1" onclick="toggleTask(1)">
-        <div class="tl-check" id="check-1"></div>
-        <div class="tl-content">
-          <div class="tl-time">50 PHÚT TRƯỚC</div>
-          <div class="tl-title">💡 Giảm độ sáng đèn</div>
-          <div class="tl-desc">Ánh sáng mạnh ức chế melatonin. Dùng đèn vàng ấm hoặc nến để não nhận tín hiệu "tối = ngủ".</div>
-          <div class="tl-countdown" id="cd-1"></div>
+
+      <p class="section-label">Bắt đầu ngay</p>
+      <div class="quick-actions">
+        <div class="quick-card" onclick="navigate('breathing')">
+          <div class="icon">🫁</div>
+          <div class="title">Thở 4-7-8</div>
+          <div class="desc">Thư giãn hệ thần kinh, ngủ trong 2 phút</div>
         </div>
-      </div>
-      <div class="timeline-item" data-idx="3" onclick="toggleTask(2)">
-        <div class="tl-check" id="check-3"></div>
-        <div class="tl-content">
-          <div class="tl-time">30 PHÚT TRƯỚC</div>
-          <div class="tl-title">📵 Tắt màn hình</div>
-          <div class="tl-desc">Đặt điện thoại sang phòng khác hoặc chế độ máy bay. Ánh sáng xanh phá vỡ nhịp sinh học.</div>
-          <div class="tl-countdown" id="cd-3"></div>
-          <button class="tl-action" onclick="event.stopPropagation();navigate('mixer')">🎚️ Bật âm thanh ngủ →</button>
+        <div class="quick-card" onclick="navigate('mixer')">
+          <div class="icon">🎚️</div>
+          <div class="title">Sound Mixer</div>
+          <div class="desc">Trộn âm thanh yêu thích của bạn</div>
         </div>
-      </div>
-      <div class="timeline-item" data-idx="4" onclick="toggleTask(3)">
-        <div class="tl-check" id="check-4"></div>
-        <div class="tl-content">
-          <div class="tl-time">15 PHÚT TRƯỚC</div>
-          <div class="tl-title">🫁 Bài thở thư giãn</div>
-          <div class="tl-desc">5 phút thở 4-7-8 hoặc Box Breathing để kích hoạt hệ thần kinh phó giao cảm.</div>
-          <div class="tl-countdown" id="cd-4"></div>
-          <button class="tl-action" onclick="event.stopPropagation();navigate('breathing')">🫁 Mở hướng dẫn thở →</button>
+        <div class="quick-card" onclick="navigate('shuffle')">
+          <div class="icon">🌀</div>
+          <div class="title">Cognitive Shuffle</div>
+          <div class="desc">Ngắt vòng suy nghĩ, ngủ nhanh hơn</div>
         </div>
-      </div>
-      <div class="timeline-item" data-idx="5" onclick="toggleTask(4)">
-        <div class="tl-check" id="check-5"></div>
-        <div class="tl-content">
-          <div class="tl-time">5 PHÚT TRƯỚC</div>
-          <div class="tl-title">🌀 Cognitive Shuffle</div>
-          <div class="tl-desc">Nằm xuống, nhắm mắt và thực hành Cognitive Shuffle để não dừng lặp suy nghĩ.</div>
-          <div class="tl-countdown" id="cd-5"></div>
-          <button class="tl-action" onclick="event.stopPropagation();navigate('shuffle')">🌀 Bắt đầu Shuffle →</button>
+        <div class="quick-card" onclick="navigate('sleep');switchSleepTab('winddown')">
+          <div class="icon">🌅</div>
+          <div class="title">Thư giãn</div>
+          <div class="desc">Chuẩn bị cơ thể và tinh thần trước khi ngủ</div>
         </div>
       </div>
     </div>
 
-    <button class="btn btn-ghost full-w" onclick="resetWinddown()">↺ Đặt lại hôm nay</button>
-  </div>
-</div>
-
-<!-- ══ SHUFFLE ══ -->
-<div class="view" id="view-shuffle">
-  <h2 class="display mt-16">Cognitive Shuffle</h2>
-  <p style="font-size:13px;color:var(--muted);margin:8px 0 24px;line-height:1.6">
-    Kỹ thuật làm não "bận rộn" với hình ảnh ngẫu nhiên, phá vỡ vòng lặp suy nghĩ — tín hiệu để não hiểu bạn đang an toàn và sẵn sàng ngủ.
-  </p>
-  <div class="shuffle-game">
-    <div class="word-display" id="shuffle-word">✦</div>
-    <div class="letter-hint" id="shuffle-hint">Nhấn bắt đầu để chơi</div>
-    <div class="imagine-prompt" id="shuffle-prompt">
-      Hãy nhắm mắt và tưởng tượng từng vật theo từng chữ cái. Đừng lo nếu bạn ngủ thiếp đi giữa chừng — đó chính là mục tiêu! 😴
+    <!-- ══ BREATHING ══ -->
+    <div class="view" id="view-breathing">
+      <h2 class="display mt-16 mb-16">Hướng dẫn thở</h2>
+      <div class="breath-selector" id="breath-selector">
+        <button class="breath-chip active" data-method="478">4-7-8</button>
+        <button class="breath-chip" data-method="box">Box Breathing</button>
+        <button class="breath-chip" data-method="relax">Thư giãn</button>
+      </div>
+      <div class="breath-center">
+        <div class="breath-info">
+          <div class="method-name" id="method-name">Kỹ thuật 4-7-8</div>
+          <div class="method-desc" id="method-desc">Hít 4 · Nín 7 · Thở ra 8</div>
+        </div>
+        <div class="breath-ring-wrap">
+          <div class="breath-ring" id="breath-ring">
+            <div class="breath-inner" id="breath-inner">
+              <div class="breath-phase" id="breath-phase">Sẵn sàng</div>
+              <div class="breath-count" id="breath-count">—</div>
+            </div>
+          </div>
+        </div>
+        <div class="breath-controls">
+          <button class="btn btn-icon" id="breath-toggle" onclick="toggleBreath()">▶</button>
+          <button class="btn btn-ghost" onclick="resetBreath()">Đặt lại</button>
+          <button class="btn btn-icon" id="breath-cue-toggle" onclick="toggleBreathCue()"
+            title="Bật/tắt âm thanh dẫn">🔊</button>
+        </div>
+        <div class="cycle-counter" id="cycle-counter" style="display:none">
+          <span id="cycle-text">Chu kỳ 1 / 4</span>
+          <div class="cycle-dots" id="cycle-dots"></div>
+        </div>
+      </div>
+      <div class="card mt-24">
+        <p style="font-size:13px;color:var(--muted);line-height:1.6">
+          <strong style="color:var(--text)">Tại sao hiệu quả?</strong><br />
+          Kỹ thuật này kích hoạt hệ thần kinh phó giao cảm, giảm cortisol và nhịp tim. Thực hành đều 4 chu kỳ mỗi đêm để
+          thấy hiệu quả rõ rệt.
+        </p>
+      </div>
     </div>
-    <div class="shuffle-controls">
-      <button class="btn btn-primary" id="shuffle-btn" onclick="startShuffle()">Bắt đầu</button>
-      <button class="btn btn-ghost" onclick="nextShuffleWord()" id="shuffle-next" style="display:none">Từ tiếp →</button>
+
+    <!-- ══ MIXER ══ -->
+    <div class="view" id="view-mixer">
+      <div class="mixer-header">
+        <h2 class="display mt-16">Sound Mixer</h2>
+        <p style="font-size:13px;color:var(--muted);margin-top:6px">Trộn nhiều âm thanh để tạo môi trường ngủ riêng của
+          bạn</p>
+      </div>
+
+      <p class="section-label">Playlist có sẵn</p>
+      <div class="preset-cards" id="preset-cards">
+        <div class="preset-card" data-preset="ngu-sau" onclick="loadPreset('ngu-sau')">
+          <div class="preset-icon">😴</div>
+          <div class="preset-label">Ngủ sâu</div>
+        </div>
+        <div class="preset-card" data-preset="tap-trung" onclick="loadPreset('tap-trung')">
+          <div class="preset-icon">🎯</div>
+          <div class="preset-label">Tập trung</div>
+        </div>
+        <div class="preset-card" data-preset="hoc-bai" onclick="loadPreset('hoc-bai')">
+          <div class="preset-icon">📚</div>
+          <div class="preset-label">Học bài</div>
+        </div>
+        <div class="preset-card" data-preset="thien-dinh" onclick="loadPreset('thien-dinh')">
+          <div class="preset-icon">🧘</div>
+          <div class="preset-label">Thiền định</div>
+        </div>
+        <div class="preset-card" data-preset="thu-gian" onclick="loadPreset('thu-gian')">
+          <div class="preset-icon">🌿</div>
+          <div class="preset-label">Thư giãn</div>
+        </div>
+        <div class="preset-card" data-preset="ca-phe" onclick="loadPreset('ca-phe')">
+          <div class="preset-icon">☕</div>
+          <div class="preset-label">Cà phê</div>
+        </div>
+        <div class="preset-card" data-preset="sang-tao" onclick="loadPreset('sang-tao')">
+          <div class="preset-icon">✨</div>
+          <div class="preset-label">Sáng tạo</div>
+        </div>
+        <div class="preset-card" data-preset="mua-dem" onclick="loadPreset('mua-dem')">
+          <div class="preset-icon">🌧️</div>
+          <div class="preset-label">Mưa đêm</div>
+        </div>
+        <div class="preset-card" data-preset="rung-dem" onclick="loadPreset('rung-dem')">
+          <div class="preset-icon">🔥</div>
+          <div class="preset-label">Rừng đêm</div>
+        </div>
+        <div class="preset-card" data-preset="chan-on" onclick="loadPreset('chan-on')">
+          <div class="preset-icon">🚫</div>
+          <div class="preset-label">Chặn ồn</div>
+        </div>
+      </div>
+
+      <p class="section-label">Thư viện âm thanh</p>
+      <div class="sound-library" id="sound-library"><!-- JS render --></div>
+
+      <p class="section-label">Mix hiện tại</p>
+      <div class="mix-tracks" id="mix-tracks">
+        <div class="empty-mix" id="empty-mix">Chưa có âm thanh nào.<br />Chọn từ thư viện phía trên để bắt đầu ✦</div>
+      </div>
+
+      <div class="mixer-controls" id="mixer-controls" style="display:none">
+        <div style="display:flex;align-items:center;gap:8px;flex:1">
+          <span style="font-size:13px;color:var(--muted)">🔊</span>
+          <input type="range" id="master-vol" min="0" max="100" value="70" oninput="setMasterVol(this.value)" />
+          <span style="font-size:13px;color:var(--muted);min-width:28px" id="master-vol-val">70</span>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;margin-bottom:8px">
+        <p class="section-label">Hẹn giờ tắt</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="timer-chip" onclick="setMixTimer(15,this)">15p</button>
+          <button class="timer-chip" onclick="setMixTimer(30,this)">30p</button>
+          <button class="timer-chip" onclick="setMixTimer(45,this)">45p</button>
+          <button class="timer-chip" onclick="setMixTimer(60,this)">60p</button>
+          <button class="timer-chip" onclick="stopMixTimer(this)">Tắt hẹn giờ</button>
+        </div>
+        <div id="mix-timer-display" style="font-size:13px;color:var(--accent);margin-top:10px;display:none"></div>
+      </div>
     </div>
-    <div class="progress-bar-wrap mt-20">
-      <div class="progress-bar-fill" id="shuffle-progress" style="width:0%"></div>
+
+    <!-- ══ SLEEP (R90 + WIND-DOWN) ══ -->
+    <div class="view" id="view-sleep">
+      <div class="sleep-tabs">
+        <button class="sleep-tab active" id="tab-r90" onclick="switchSleepTab('r90')">🌙 Chu kỳ R90</button>
+        <button class="sleep-tab" id="tab-winddown" onclick="switchSleepTab('winddown')">🌅 Thư giãn</button>
+      </div>
+
+      <!-- R90 Panel -->
+      <div id="panel-r90">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6">
+          Mỗi chu kỳ ngủ kéo dài <strong style="color:var(--accent)">90 phút</strong>. Tỉnh dậy đúng cuối chu kỳ giúp
+          bạn tỉnh táo hơn dù ngủ ít hơn.
+        </p>
+        <div class="time-input-wrap">
+          <label>🔔 Tôi cần thức dậy lúc:</label>
+          <div class="time-picker">
+            <select id="wake-hour">
+              <option value="4">04</option>
+              <option value="5">05</option>
+              <option value="6" selected>06</option>
+              <option value="7">07</option>
+              <option value="8">08</option>
+              <option value="9">09</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+            </select>
+            <span class="colon">:</span>
+            <select id="wake-min">
+              <option value="0">00</option>
+              <option value="15">15</option>
+              <option value="30">30</option>
+              <option value="45">45</option>
+            </select>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Tôi muốn ngủ bao nhiêu chu kỳ?</p>
+        <div class="cycles-row">
+          <div class="cycle-opt" data-c="3" onclick="selectCycle(3,this)">
+            <div class="c-num">3</div>
+            <div class="c-label">4.5h</div>
+          </div>
+          <div class="cycle-opt" data-c="4" onclick="selectCycle(4,this)">
+            <div class="c-num">4</div>
+            <div class="c-label">6h</div>
+          </div>
+          <div class="cycle-opt active" data-c="5" onclick="selectCycle(5,this)">
+            <div class="c-num">5</div>
+            <div class="c-label">7.5h</div>
+          </div>
+          <div class="cycle-opt" data-c="6" onclick="selectCycle(6,this)">
+            <div class="c-num">6</div>
+            <div class="c-label">9h</div>
+          </div>
+        </div>
+        <button class="btn btn-primary full-w" onclick="calcR90()">Tính giờ ngủ →</button>
+        <div class="results-list mt-20" id="r90-results"></div>
+        <div class="card mt-16">
+          <p style="font-size:13px;color:var(--muted);line-height:1.6">💡 <strong
+              style="color:var(--text)">Mẹo:</strong> App đã tính sẵn 14 phút để chìm vào giấc ngủ. Sau khi tính xong,
+            hãy chuyển sang Thư giãn để chuẩn bị.</p>
+        </div>
+      </div>
+
+      <!-- Thư giãn Panel -->
+      <div id="panel-winddown" style="display:none">
+        <div class="winddown-hero">
+          <div class="readiness-big" id="wd-score">0</div>
+          <div class="readiness-label">Sẵn sàng cho giấc ngủ</div>
+          <div class="wd-bar-track">
+            <div class="wd-bar-fill" id="wd-bar" style="width:0%"></div>
+          </div>
+          <p style="font-size:12px;color:var(--muted);margin-top:4px" id="wd-status-text">Hoàn thành các bước bên dưới
+            để tăng điểm</p>
+        </div>
+
+        <div class="bedtime-row">
+          <label>🛏 Dự định ngủ lúc:</label>
+          <select id="wd-hour">
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23" selected>23</option>
+            <option value="0">00</option>
+            <option value="1">01</option>
+          </select>
+          <span style="color:var(--muted)">:</span>
+          <select id="wd-min">
+            <option value="0" selected>00</option>
+            <option value="30">30</option>
+          </select>
+          <button class="btn btn-sm" onclick="startWinddown()">Bắt đầu</button>
+        </div>
+
+        <div class="timeline-list" id="timeline-list">
+          <div class="timeline-item" data-idx="0" onclick="toggleTask(0)">
+            <div class="tl-check" id="check-0"></div>
+            <div class="tl-content">
+              <div class="tl-time">60 PHÚT TRƯỚC</div>
+              <div class="tl-title">☕ Ngừng caffeine & rượu</div>
+              <div class="tl-desc">Caffeine tồn tại trong cơ thể 6–8 giờ. Uống trà thảo mộc hoặc nước ấm thay thế.</div>
+              <div class="tl-countdown" id="cd-0"></div>
+            </div>
+          </div>
+          <div class="timeline-item" data-idx="1" onclick="toggleTask(1)">
+            <div class="tl-check" id="check-1"></div>
+            <div class="tl-content">
+              <div class="tl-time">50 PHÚT TRƯỚC</div>
+              <div class="tl-title">💡 Giảm độ sáng đèn</div>
+              <div class="tl-desc">Ánh sáng mạnh ức chế melatonin. Dùng đèn vàng ấm hoặc nến để não nhận tín hiệu "tối =
+                ngủ".</div>
+              <div class="tl-countdown" id="cd-1"></div>
+            </div>
+          </div>
+          <div class="timeline-item" data-idx="3" onclick="toggleTask(2)">
+            <div class="tl-check" id="check-3"></div>
+            <div class="tl-content">
+              <div class="tl-time">30 PHÚT TRƯỚC</div>
+              <div class="tl-title">📵 Tắt màn hình</div>
+              <div class="tl-desc">Đặt điện thoại sang phòng khác hoặc chế độ máy bay. Ánh sáng xanh phá vỡ nhịp sinh
+                học.</div>
+              <div class="tl-countdown" id="cd-3"></div>
+              <button class="tl-action" onclick="event.stopPropagation();navigate('mixer')">🎚️ Bật âm thanh ngủ
+                →</button>
+            </div>
+          </div>
+          <div class="timeline-item" data-idx="4" onclick="toggleTask(3)">
+            <div class="tl-check" id="check-4"></div>
+            <div class="tl-content">
+              <div class="tl-time">15 PHÚT TRƯỚC</div>
+              <div class="tl-title">🫁 Bài thở thư giãn</div>
+              <div class="tl-desc">5 phút thở 4-7-8 hoặc Box Breathing để kích hoạt hệ thần kinh phó giao cảm.</div>
+              <div class="tl-countdown" id="cd-4"></div>
+              <button class="tl-action" onclick="event.stopPropagation();navigate('breathing')">🫁 Mở hướng dẫn thở
+                →</button>
+            </div>
+          </div>
+          <div class="timeline-item" data-idx="5" onclick="toggleTask(4)">
+            <div class="tl-check" id="check-5"></div>
+            <div class="tl-content">
+              <div class="tl-time">5 PHÚT TRƯỚC</div>
+              <div class="tl-title">🌀 Cognitive Shuffle</div>
+              <div class="tl-desc">Nằm xuống, nhắm mắt và thực hành Cognitive Shuffle để não dừng lặp suy nghĩ.</div>
+              <div class="tl-countdown" id="cd-5"></div>
+              <button class="tl-action" onclick="event.stopPropagation();navigate('shuffle')">🌀 Bắt đầu Shuffle
+                →</button>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-ghost full-w" onclick="resetWinddown()">↺ Đặt lại hôm nay</button>
+      </div>
     </div>
-  </div>
-  <div class="card mt-24">
-    <p style="font-size:13px;color:var(--muted);line-height:1.6">
-      <strong style="color:var(--text)">Khoa học đằng sau:</strong><br/>
-      Cognitive Shuffle mô phỏng cách não tự nhiên "drift" vào giấc ngủ — thông qua những suy nghĩ rời rạc, không liên kết, thay vì các vòng lặp lo lắng có cấu trúc.
-    </p>
-  </div>
-</div>
 
-</div><!-- /app -->
+    <!-- ══ SHUFFLE ══ -->
+    <div class="view" id="view-shuffle">
+      <h2 class="display mt-16">Cognitive Shuffle</h2>
+      <p style="font-size:13px;color:var(--muted);margin:8px 0 24px;line-height:1.6">
+        Kỹ thuật làm não "bận rộn" với hình ảnh ngẫu nhiên, phá vỡ vòng lặp suy nghĩ — tín hiệu để não hiểu bạn đang an
+        toàn và sẵn sàng ngủ.
+      </p>
+      <div class="shuffle-game">
+        <div class="word-display" id="shuffle-word">✦</div>
+        <div class="letter-hint" id="shuffle-hint">Nhấn bắt đầu để chơi</div>
+        <div class="imagine-prompt" id="shuffle-prompt">
+          Hãy nhắm mắt và tưởng tượng từng vật theo từng chữ cái. Đừng lo nếu bạn ngủ thiếp đi giữa chừng — đó chính là
+          mục tiêu! 😴
+        </div>
+        <div class="shuffle-controls">
+          <button class="btn btn-primary" id="shuffle-btn" onclick="startShuffle()">Bắt đầu</button>
+          <button class="btn btn-ghost" onclick="nextShuffleWord()" id="shuffle-next" style="display:none">Từ tiếp
+            →</button>
+        </div>
+        <div class="progress-bar-wrap mt-20">
+          <div class="progress-bar-fill" id="shuffle-progress" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="card mt-24">
+        <p style="font-size:13px;color:var(--muted);line-height:1.6">
+          <strong style="color:var(--text)">Khoa học đằng sau:</strong><br />
+          Cognitive Shuffle mô phỏng cách não tự nhiên "drift" vào giấc ngủ — thông qua những suy nghĩ rời rạc, không
+          liên kết, thay vì các vòng lặp lo lắng có cấu trúc.
+        </p>
+      </div>
+    </div>
 
-<!-- BOTTOM NAV -->
-<nav id="bottom-nav">
-  <button class="nav-item active" data-view="home" onclick="navigate('home')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
-    <span class="nav-label">Trang chủ</span>
-  </button>
-  <button class="nav-item" data-view="breathing" onclick="navigate('breathing')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-    <span class="nav-label">Thở</span>
-  </button>
-  <button class="nav-item" data-view="mixer" onclick="navigate('mixer')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-    <span class="nav-label">Mixer</span>
-  </button>
-  <button class="nav-item" data-view="sleep" onclick="navigate('sleep')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
-    <span class="nav-label">Giấc ngủ</span>
-  </button>
-  <button class="nav-item" data-view="shuffle" onclick="navigate('shuffle')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="16,3 21,3 21,8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21,16 21,21 16,21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
-    <span class="nav-label">Shuffle</span>
-  </button>
-</nav>
+  </div><!-- /app -->
 
-<script src="js/theme.js"></script>
-<script src="js/stars.js"></script>
-<script src="js/nav.js"></script>
-<script src="js/audio.js"></script>
-<script src="js/breathing.js"></script>
-<script src="js/mixer.js"></script>
-<script src="js/r90.js"></script>
-<script src="js/winddown.js"></script>
-<script src="js/shuffle.js"></script>
-<script src="js/app.js"></script>
+  <!-- BOTTOM NAV -->
+  <nav id="bottom-nav">
+    <button class="nav-item active" data-view="home" onclick="navigate('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+        <polyline points="9,22 9,12 15,12 15,22" />
+      </svg>
+      <span class="nav-label">Trang chủ</span>
+    </button>
+    <button class="nav-item" data-view="breathing" onclick="navigate('breathing')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+        <line x1="9" y1="9" x2="9.01" y2="9" />
+        <line x1="15" y1="9" x2="15.01" y2="9" />
+      </svg>
+      <span class="nav-label">Thở</span>
+    </button>
+    <button class="nav-item" data-view="mixer" onclick="navigate('mixer')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M9 18V5l12-2v13" />
+        <circle cx="6" cy="18" r="3" />
+        <circle cx="18" cy="16" r="3" />
+      </svg>
+      <span class="nav-label">Mixer</span>
+    </button>
+    <button class="nav-item" data-view="sleep" onclick="navigate('sleep')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="12" cy="12" r="10" />
+        <polyline points="12,6 12,12 16,14" />
+      </svg>
+      <span class="nav-label">Giấc ngủ</span>
+    </button>
+    <button class="nav-item" data-view="shuffle" onclick="navigate('shuffle')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <polyline points="16,3 21,3 21,8" />
+        <line x1="4" y1="20" x2="21" y2="3" />
+        <polyline points="21,16 21,21 16,21" />
+        <line x1="15" y1="15" x2="21" y2="21" />
+      </svg>
+      <span class="nav-label">Shuffle</span>
+    </button>
+  </nav>
+
+  <script src="js/theme.js"></script>
+  <script src="js/stars.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/breathing.js"></script>
+  <script src="js/mixer.js"></script>
+  <script src="js/r90.js"></script>
+  <script src="js/winddown.js"></script>
+  <script src="js/shuffle.js"></script>
+  <script src="js/app.js"></script>
 </body>
+
 </html>

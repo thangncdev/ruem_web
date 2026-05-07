@@ -186,7 +186,7 @@ Logic greeting theo giờ:
 - 18–23h: "Chào buổi tối ✦"
 
 #### 4.1.2 Sleep Readiness Card
-Card hiển thị điểm Sleep Readiness (0–100) đồng bộ từ Wind-down Routine.
+Card hiển thị điểm Sleep Readiness (0–100) đồng bộ từ Thư giãn Routine.
 
 ```
 [Card]
@@ -195,7 +195,7 @@ Card hiển thị điểm Sleep Readiness (0–100) đồng bộ từ Wind-down 
          Sub text — ví dụ: "Đang tiến triển tốt 👍"
   [Phải] Icon 🌙 (40px, opacity 0.6)
   [Full width] Progress bar (height 8px, gradient accent → accent3)
-  [Button] "Bắt đầu Wind-down →" → navigate đến view-sleep, tab winddown
+  [Button] "Bắt đầu Thư giãn →" → navigate đến view-sleep, tab winddown
 ```
 
 Progress bar fill: `width: {score}%`, `background: linear-gradient(90deg, var(--accent), var(--accent3))`, `transition: width 0.8s ease`.
@@ -229,7 +229,7 @@ Sub text theo score:
 | 🫁 | Thở 4-7-8 | Thư giãn hệ thần kinh, ngủ trong 2 phút | navigate('breathing') |
 | 🎚️ | Sound Mixer | Trộn âm thanh yêu thích của bạn | navigate('mixer') |
 | 🌀 | Cognitive Shuffle | Ngắt vòng suy nghĩ, ngủ nhanh hơn | navigate('shuffle') |
-| 🌅 | Wind-down | Chuẩn bị cơ thể và tinh thần trước khi ngủ | navigate('sleep') + tab winddown |
+| 🌅 | Thư giãn | Chuẩn bị cơ thể và tinh thần trước khi ngủ | navigate('sleep') + tab winddown |
 
 ---
 
@@ -479,13 +479,13 @@ function setTrackVol(type, v) {
 
 ### 4.4 VIEW: Giấc ngủ (`view-sleep`)
 
-View này có 2 tab lồng bên trong: **R90** và **Wind-down**.
+View này có 2 tab lồng bên trong: **R90** và **Thư giãn**.
 
 #### 4.4.1 Tab switcher
 ```html
 <div class="sleep-tabs">
   <button class="sleep-tab active" onclick="switchSleepTab('r90')">🌙 Chu kỳ R90</button>
-  <button class="sleep-tab" onclick="switchSleepTab('winddown')">🌅 Wind-down</button>
+  <button class="sleep-tab" onclick="switchSleepTab('winddown')">🌅 Thư giãn</button>
 </div>
 ```
 CSS: flex, background `var(--surface)`, border radius 50px, padding 4px. Active tab: `background: var(--accent); color: var(--bg)`.
@@ -537,7 +537,7 @@ Item khuyến nghị: background gradient accent nhạt, border accent.
 
 Auto tính khi load và khi thay đổi select.
 
-#### 4.4.3 Panel Wind-down
+#### 4.4.3 Panel Thư giãn
 
 **Sleep Readiness Score (trung tâm):**
 ```
@@ -765,7 +765,7 @@ let mixTracks = {};            // { [soundId]: { src, gainNode, icon, name, vol 
 let mixTimer = null;           // setTimeout cho sleep timer
 ```
 
-### 7.3 Wind-down state
+### 7.3 Thư giãn state
 ```javascript
 let wdDone = [];               // mảng index các task đã done
 let wdInterval = null;         // setInterval 30s cập nhật countdown
@@ -823,8 +823,8 @@ Những tính năng này **chưa cần build ngay**, ghi lại để tham khảo
 - [ ] Presets load đúng sounds
 - [ ] Sleep timer fade out mượt
 - [ ] R90 tính đúng giờ (test: thức 6:00, 5 chu kỳ → ngủ 21:46)
-- [ ] Wind-down score cộng đúng (tổng 5 task = 100 điểm)
-- [ ] Wind-down countdown cập nhật khi đặt giờ ngủ
+- [ ] Thư giãn score cộng đúng (tổng 5 task = 100 điểm)
+- [ ] Thư giãn countdown cập nhật khi đặt giờ ngủ
 - [ ] Action buttons trong wind-down navigate đúng view
 - [ ] Score đồng bộ về trang chủ
 - [ ] Cognitive shuffle: từ ngẫu nhiên, prompt có fade
