@@ -16,16 +16,17 @@ function renderSoundLibrary(){
   });
 }
 
-function addToMix(id){
+function addToMix(id,vol=70){
   if(mixTracks[id]){removeFromMix(id);return}
   const meta=soundMeta(id);
   if(!meta)return;
   const ctx=getCtx(),gainNode=ctx.createGain();
+  gainNode.gain.setTargetAtTime(vol/100*.8,ctx.currentTime,.1);
   gainNode.connect(masterGainNode);
   const src=startSoundNode(id,gainNode);
   trackSources[id]=src;
   const el=document.querySelector(`[data-sound-id="${CSS.escape(id)}"]`);
-  mixTracks[id]={src,gainNode,icon:meta.icon,name:meta.name,vol:70,el};
+  mixTracks[id]={src,gainNode,icon:meta.icon,name:meta.name,vol,el};
   if(el)el.classList.add('in-mix');
   renderMixTracks();
 }
@@ -80,15 +81,25 @@ function setMasterVol(v){
 }
 
 const PRESETS={
-  'rain-night':['rain/light-rain','rain/thunder','animals/crickets'],
-  'deep-sleep':['nature/waves','noise/brown-noise'],
-  'forest-fire':['nature/jungle','nature/campfire','animals/owl'],
-  'focus':['noise/white-noise','nature/river']
+  'ngu-sau':    {label:'Ngủ sâu',    icon:'😴',tracks:[{id:'nature/waves',vol:50},{id:'noise/brown-noise',vol:60},{id:'binaural/binaural-delta',vol:30}]},
+  'tap-trung':  {label:'Tập trung',  icon:'🎯',tracks:[{id:'noise/white-noise',vol:60},{id:'nature/river',vol:35},{id:'binaural/binaural-beta',vol:40}]},
+  'hoc-bai':    {label:'Học bài',    icon:'📚',tracks:[{id:'places/cafe',vol:55},{id:'rain/light-rain',vol:40},{id:'binaural/binaural-alpha',vol:35}]},
+  'thien-dinh': {label:'Thiền định', icon:'🧘',tracks:[{id:'things/singing-bowl',vol:65},{id:'binaural/binaural-theta',vol:45},{id:'nature/wind',vol:25}]},
+  'thu-gian':   {label:'Thư giãn',   icon:'🌿',tracks:[{id:'nature/waves',vol:55},{id:'animals/birds',vol:50},{id:'nature/wind-in-trees',vol:30}]},
+  'ca-phe':     {label:'Cà phê',     icon:'☕',tracks:[{id:'places/cafe',vol:70},{id:'rain/light-rain',vol:35},{id:'things/keyboard',vol:25}]},
+  'sang-tao':   {label:'Sáng tạo',   icon:'✨',tracks:[{id:'rain/light-rain',vol:45},{id:'things/wind-chimes',vol:55},{id:'binaural/binaural-alpha',vol:35}]},
+  'mua-dem':    {label:'Mưa đêm',    icon:'🌧️',tracks:[{id:'rain/light-rain',vol:70},{id:'rain/thunder',vol:40},{id:'animals/crickets',vol:50}]},
+  'rung-dem':   {label:'Rừng đêm',   icon:'🔥',tracks:[{id:'nature/jungle',vol:60},{id:'nature/campfire',vol:70},{id:'animals/owl',vol:40}]},
 };
+
+let activePreset=null;
 
 function loadPreset(name){
   Object.keys(mixTracks).forEach(removeFromMix);
-  PRESETS[name].forEach(id=>setTimeout(()=>addToMix(id),100));
+  PRESETS[name].tracks.forEach(({id,vol})=>setTimeout(()=>addToMix(id,vol),100));
+  activePreset=name;
+  document.querySelectorAll('.preset-card').forEach(c=>
+    c.classList.toggle('active',c.dataset.preset===name));
 }
 
 let mixTimer=null;

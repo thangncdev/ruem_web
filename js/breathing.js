@@ -1,14 +1,31 @@
-const PHASE_CUES={inhale:'things/wind-chimes',hold:'things/singing-bowl',exhale:'nature/waves'};
 let breathCueEnabled=localStorage.getItem('breathCueEnabled')!=='false';
-let currentCueHandle=null;
+let breathAudio=null;
+
 function setBreathCueEnabled(v){
   breathCueEnabled=v;
   localStorage.setItem('breathCueEnabled',v);
   const btn=document.getElementById('breath-cue-toggle');
   if(btn)btn.textContent=v?'🔊':'🔇';
-  if(!v&&currentCueHandle){currentCueHandle.stop();currentCueHandle=null;}
+  if(!v)stopBreathAudio();
+  else if(breathRunning)playBreathAudio();
 }
 function toggleBreathCue(){setBreathCueEnabled(!breathCueEnabled)}
+
+function playBreathAudio(){
+  if(!breathCueEnabled)return;
+  const url=`sounds/breath/${breathMethod}.mp3`;
+  if(!breathAudio||breathAudio._method!==breathMethod){
+    if(breathAudio){breathAudio.pause();breathAudio=null;}
+    const a=new Audio(url);
+    a.loop=true;a.volume=.85;a._method=breathMethod;
+    breathAudio=a;
+  }
+  breathAudio.play().catch(()=>{});
+}
+function pauseBreathAudio(){if(breathAudio)breathAudio.pause();}
+function stopBreathAudio(){
+  if(breathAudio){breathAudio.pause();breathAudio.currentTime=0;breathAudio=null;}
+}
 
 const METHODS={
   '478':{name:'Kỹ thuật 4-7-8',desc:'Hít 4 · Nín 7 · Thở ra 8',phases:[{l:'Hít vào',d:4},{l:'Nín thở',d:7},{l:'Thở ra',d:8}],cycles:4},
@@ -37,6 +54,7 @@ function startBreath(){
   document.getElementById('breath-toggle').textContent='⏸';
   document.getElementById('cycle-counter').style.display='block';
   renderCycleDots();
+  playBreathAudio();
   runBreathPhase();
 }
 
@@ -45,11 +63,12 @@ function pauseBreath(){
   clearTimeout(breathTimer);
   clearInterval(breathCountTimer);
   document.getElementById('breath-toggle').textContent='▶';
-  if(currentCueHandle){currentCueHandle.stop();currentCueHandle=null;}
+  pauseBreathAudio();
 }
 
 function resetBreath(){
   pauseBreath();
+  stopBreathAudio();
   breathPhaseIdx=0;
   breathCyclesDone=0;
   const ring=document.getElementById('breath-ring'),inner=document.getElementById('breath-inner');
@@ -75,11 +94,6 @@ function runBreathPhase(){
   if(isExpand){ring.classList.add('expanding');inner.classList.add('expanding')}
   else if(isHold){ring.classList.add('holding');inner.classList.add('holding')}
   else if(isOut){ring.classList.add('contracting');inner.classList.add('contracting')}
-  if(currentCueHandle){currentCueHandle.stop();currentCueHandle=null;}
-  if(breathCueEnabled){
-    const cueId=isExpand?PHASE_CUES.inhale:isHold?PHASE_CUES.hold:PHASE_CUES.exhale;
-    currentCueHandle=playCue(cueId,d);
-  }
   let remaining=d;
   document.getElementById('breath-count').textContent=remaining;
   clearInterval(breathCountTimer);
@@ -92,7 +106,6 @@ function runBreathPhase(){
       breathCyclesDone++;
       renderCycleDots();
       if(breathCyclesDone>=m.cycles){
-        if(currentCueHandle){currentCueHandle.stop();currentCueHandle=null;}
         resetBreath();
         document.getElementById('breath-phase').textContent='✓ Hoàn thành';
         document.getElementById('breath-count').textContent='';

@@ -120,12 +120,18 @@
     <p style="font-size:13px;color:var(--muted);margin-top:6px">Trộn nhiều âm thanh để tạo môi trường ngủ riêng của bạn</p>
   </div>
 
-  <p class="section-label">Preset có sẵn</p>
-  <div class="presets-row">
-    <button class="preset-chip" onclick="loadPreset('rain-night')">🌧️ Mưa đêm</button>
-    <button class="preset-chip" onclick="loadPreset('deep-sleep')">🌊 Ngủ sâu</button>
-    <button class="preset-chip" onclick="loadPreset('forest-fire')">🔥 Rừng đêm</button>
-    <button class="preset-chip" onclick="loadPreset('focus')">🎵 Tập trung</button>
+  <p class="section-label">Playlist có sẵn</p>
+  <div class="preset-cards" id="preset-cards">
+    <div class="preset-card" data-preset="ngu-sau"    onclick="loadPreset('ngu-sau')">   <div class="preset-icon">😴</div><div class="preset-label">Ngủ sâu</div></div>
+    <div class="preset-card" data-preset="tap-trung"  onclick="loadPreset('tap-trung')"> <div class="preset-icon">🎯</div><div class="preset-label">Tập trung</div></div>
+    <div class="preset-card" data-preset="hoc-bai"    onclick="loadPreset('hoc-bai')">   <div class="preset-icon">📚</div><div class="preset-label">Học bài</div></div>
+    <div class="preset-card" data-preset="thien-dinh" onclick="loadPreset('thien-dinh')"><div class="preset-icon">🧘</div><div class="preset-label">Thiền định</div></div>
+    <div class="preset-card" data-preset="thu-gian"   onclick="loadPreset('thu-gian')">  <div class="preset-icon">🌿</div><div class="preset-label">Thư giãn</div></div>
+    <div class="preset-card" data-preset="ca-phe"     onclick="loadPreset('ca-phe')">    <div class="preset-icon">☕</div><div class="preset-label">Cà phê</div></div>
+    <div class="preset-card" data-preset="sang-tao"   onclick="loadPreset('sang-tao')">  <div class="preset-icon">✨</div><div class="preset-label">Sáng tạo</div></div>
+    <div class="preset-card" data-preset="mua-dem"    onclick="loadPreset('mua-dem')">   <div class="preset-icon">🌧️</div><div class="preset-label">Mưa đêm</div></div>
+    <div class="preset-card" data-preset="rung-dem"   onclick="loadPreset('rung-dem')">  <div class="preset-icon">🔥</div><div class="preset-label">Rừng đêm</div></div>
+    <div class="preset-card" data-preset="chan-on"    onclick="loadPreset('chan-on')">    <div class="preset-icon">🚫</div><div class="preset-label">Chặn ồn</div></div>
   </div>
 
   <p class="section-label">Thư viện âm thanh</p>
