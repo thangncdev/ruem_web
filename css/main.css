@@ -280,21 +280,30 @@ input[type=range].mini::-webkit-slider-thumb{width:12px;height:12px}
 }
 .breath-ring::before{
   content:'';position:absolute;inset:0;border-radius:50%;
-  background:radial-gradient(circle,rgba(126,184,212,.15) 0%,transparent 70%);
+  background:radial-gradient(circle,rgba(126,184,212,.18) 0%,transparent 70%);
   transform:scale(.3);transition:transform 0s,opacity .3s;
 }
-.breath-ring.expanding::before{transform:scale(1.4);transition:transform var(--bd,4s) ease-in-out}
+.breath-ring.expanding::before{transform:scale(1.4);transition:transform var(--bd,4s) var(--ease-breath)}
 .breath-ring.holding::before{transform:scale(1.4)}
-.breath-ring.contracting::before{transform:scale(.3);transition:transform var(--bd,8s) ease-in-out}
+.breath-ring.contracting::before{animation:contractRingBefore var(--bd,8s) var(--ease-breath) forwards}
 
 /* Particle aura via layered box-shadow */
 .breath-ring.expanding{
+  transform:scale(1.06);
+  transition:transform var(--bd,4s) var(--ease-breath),box-shadow var(--bd,4s) ease-out;
   box-shadow:
-    0 0 28px rgba(126,184,212,.12),
-    0 0 56px rgba(126,184,212,.07),
-    0 0 90px rgba(126,184,212,.04);
+    0 0 32px rgba(126,184,212,.16),
+    0 0 64px rgba(126,184,212,.09),
+    0 0 100px rgba(126,184,212,.05);
 }
-.breath-ring.holding{box-shadow:0 0 20px rgba(126,184,212,.1)}
+.breath-ring.holding{
+  transform:scale(1.06);
+  box-shadow:0 0 24px rgba(126,184,212,.13),0 0 48px rgba(126,184,212,.07);
+}
+.breath-ring.contracting{
+  animation:contractRingScale var(--bd,8s) var(--ease-breath) forwards,
+            contractGlow var(--bd,8s) ease-in forwards;
+}
 
 .breath-inner{
   width:120px;height:120px;border-radius:50%;
@@ -303,12 +312,12 @@ input[type=range].mini::-webkit-slider-thumb{width:12px;height:12px}
   display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;
   transform:scale(.7);transition:transform 0s;filter:blur(.3px);
 }
-.breath-inner.expanding{transform:scale(1.15);transition:transform var(--bd,4s) ease-in-out}
+.breath-inner.expanding{transform:scale(1.15);transition:transform var(--bd,4s) var(--ease-breath)}
 .breath-inner.holding{
   transform:scale(1.15);
-  animation:innerPulse 1.6s ease-in-out infinite;
+  animation:innerPulse 1.8s ease-in-out infinite;
 }
-.breath-inner.contracting{transform:scale(.7);transition:transform var(--bd,8s) ease-in-out}
+.breath-inner.contracting{animation:contractInner var(--bd,8s) var(--ease-breath) forwards}
 
 @keyframes innerPulse{
   0%,100%{filter:blur(.3px) brightness(1)}
@@ -319,6 +328,13 @@ input[type=range].mini::-webkit-slider-thumb{width:12px;height:12px}
   50%{opacity:1;transform:scale(1.07)}
 }
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes contractInner{from{transform:scale(1.15)}to{transform:scale(.7)}}
+@keyframes contractRingBefore{from{transform:scale(1.4)}to{transform:scale(.3)}}
+@keyframes contractRingScale{from{transform:scale(1.06)}to{transform:scale(1)}}
+@keyframes contractGlow{
+  from{box-shadow:0 0 32px rgba(126,184,212,.16),0 0 64px rgba(126,184,212,.09),0 0 100px rgba(126,184,212,.05)}
+  to{box-shadow:0 0 4px rgba(126,184,212,.03)}
+}
 
 .breath-phase{font-size:13px;font-weight:600;color:var(--accent)}
 .breath-count{font-size:28px;font-family:'Cormorant Garamond',serif}

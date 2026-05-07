@@ -17,4 +17,8 @@
 
   if (g) g.textContent = content.greet;
   if (d) d.innerHTML = content.msg;
+
+  // sync breath cue toggle icon with saved preference
+  const cueBtn=document.getElementById('breath-cue-toggle');
+  if(cueBtn)cueBtn.textContent=localStorage.getItem('breathCueEnabled')==='false'?'🔇':'🔊';
 })();

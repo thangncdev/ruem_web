@@ -152,3 +152,31 @@ function startSoundNode(id,gainNode){
   }).catch(err=>console.error('startSoundNode failed',id,err));
   return handle;
 }
+
+let cueGainNode=null;
+function getCueGain(){
+  const ctx=getCtx();
+  if(!cueGainNode){cueGainNode=ctx.createGain();cueGainNode.gain.value=.85;cueGainNode.connect(ctx.destination);}
+  return cueGainNode;
+}
+
+function playCue(id,dur){
+  const ctx=getCtx(),gain=getCueGain();
+  const handle={_src:null,_cancelled:false,stop(){
+    this._cancelled=true;
+    if(this._src){try{this._src.stop()}catch(e){}}
+  }};
+  loadBuffer(id).then(buf=>{
+    if(handle._cancelled)return;
+    const src=ctx.createBufferSource(),g=ctx.createGain();
+    src.buffer=buf;src.loop=true;
+    g.gain.setValueAtTime(.85,ctx.currentTime);
+    const fadeStart=ctx.currentTime+Math.max(0,dur-.2);
+    g.gain.setValueAtTime(.85,fadeStart);
+    g.gain.linearRampToValueAtTime(0,ctx.currentTime+dur);
+    src.connect(g);g.connect(gain);
+    src.start();src.stop(ctx.currentTime+dur);
+    handle._src=src;
+  }).catch(err=>console.error('playCue failed',id,err));
+  return handle;
+}
