@@ -82,6 +82,21 @@ body::before{
   50%{transform:translateY(-12px) rotate(2deg)}
 }
 
+/* ═══ THEMES ═══ */
+body { transition: background 2.5s ease; }
+#moon-orb { transition: background 2.5s ease; }
+
+body.theme-night {
+  background: radial-gradient(ellipse 130% 90% at 72% -8%, #0d1a2c 0%, #060b14 52%, #03060d 100%);
+}
+body.theme-morning {
+  background: radial-gradient(ellipse 130% 90% at 72% -8%, #0d2540 0%, #071828 52%, #040e18 100%);
+}
+body.theme-afternoon {
+  background: radial-gradient(ellipse 130% 90% at 72% -8%, #0a2018 0%, #051510 52%, #030d08 100%);
+}
+body.theme-afternoon { --accent: #6dc98a; --glow-cool: rgba(109,201,138,.3); }
+
 /* ═══ NAV ═══ */
 #bottom-nav{
   position:relative;z-index:100;flex-shrink:0;width:100%;

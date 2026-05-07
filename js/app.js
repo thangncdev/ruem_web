@@ -1,4 +1,6 @@
 (function() {
+  if (window.SkyTheme) window.SkyTheme.init();
+
   const hour = new Date().getHours();
   const g = document.getElementById('greeting-text');
   const d = document.getElementById('display-text');
