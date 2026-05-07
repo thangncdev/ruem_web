@@ -21,7 +21,9 @@ function toggleTask(idx){
 
 function updateReadiness(){
   const score=wdDone.reduce((sum,i)=>sum+WD_TASKS[i].score,0);
-  document.getElementById('wd-score').textContent=score;
+  const scoreEl=document.getElementById('wd-score');
+  scoreEl.textContent=score;
+  scoreEl.classList.remove('bumping');void scoreEl.offsetWidth;scoreEl.classList.add('bumping');
   document.getElementById('wd-bar').style.width=score+'%';
   document.getElementById('home-readiness-score').textContent=score;
   document.getElementById('home-bar').style.width=score+'%';

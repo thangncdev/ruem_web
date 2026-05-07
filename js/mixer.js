@@ -1,25 +1,46 @@
 let mixTracks={};
 
-function addToMix(type,icon,name){
-  if(mixTracks[type]){removeFromMix(type);return}
+function renderSoundLibrary(){
+  const root=document.getElementById('sound-library');
+  if(!root)return;
+  root.innerHTML=Object.keys(SOUND_LIBRARY).map(cat=>{
+    const c=SOUND_LIBRARY[cat];
+    const tiles=c.items.map(it=>{
+      const id=`${cat}/${it.id}`;
+      return`<div class="sound-lib-item" data-sound-id="${id}"><div class="s-icon">${it.icon}</div><div class="s-name">${it.name}</div><div class="s-add">+ Thêm</div></div>`;
+    }).join('');
+    return`<div class="sound-cat"><div class="sound-cat-head"><span>${c.icon}</span><span>${c.label}</span></div><div class="sound-row">${tiles}</div></div>`;
+  }).join('');
+  root.querySelectorAll('.sound-lib-item').forEach(el=>{
+    el.addEventListener('click',()=>addToMix(el.dataset.soundId));
+  });
+}
+
+function addToMix(id){
+  if(mixTracks[id]){removeFromMix(id);return}
+  const meta=soundMeta(id);
+  if(!meta)return;
   const ctx=getCtx(),gainNode=ctx.createGain();
   gainNode.connect(masterGainNode);
-  const src=startSoundNode(type,gainNode);
-  trackSources[type]=src;
-  mixTracks[type]={src,gainNode,icon,name,vol:70};
-  document.querySelector(`[data-sound="${type}"]`).classList.add('in-mix');
+  const src=startSoundNode(id,gainNode);
+  trackSources[id]=src;
+  const el=document.querySelector(`[data-sound-id="${CSS.escape(id)}"]`);
+  mixTracks[id]={src,gainNode,icon:meta.icon,name:meta.name,vol:70,el};
+  if(el)el.classList.add('in-mix');
   renderMixTracks();
 }
 
-function removeFromMix(type){
-  if(!mixTracks[type])return;
-  try{mixTracks[type].src.stop()}catch(e){}
-  mixTracks[type].gainNode.disconnect();
-  delete mixTracks[type];
-  delete trackSources[type];
-  document.querySelector(`[data-sound="${type}"]`).classList.remove('in-mix');
+function removeFromMix(id){
+  if(!mixTracks[id])return;
+  try{mixTracks[id].src.stop()}catch(e){}
+  mixTracks[id].gainNode.disconnect();
+  if(mixTracks[id].el)mixTracks[id].el.classList.remove('in-mix');
+  delete mixTracks[id];
+  delete trackSources[id];
   renderMixTracks();
 }
+
+function trackKey(id){return id.replace(/\//g,'_')}
 
 function renderMixTracks(){
   const wrap=document.getElementById('mix-tracks'),ctrl=document.getElementById('mixer-controls');
@@ -30,27 +51,27 @@ function renderMixTracks(){
     return;
   }
   ctrl.style.display='flex';
-  wrap.innerHTML=keys.map(type=>{
-    const t=mixTracks[type];
-    return`<div class="track-card" id="track-${type}">
+  wrap.innerHTML=keys.map(id=>{
+    const t=mixTracks[id],k=trackKey(id);
+    return`<div class="track-card" id="track-${k}">
       <div class="track-header">
         <span class="track-icon">${t.icon}</span>
         <span class="track-name">${t.name}</span>
-        <button class="track-remove" onclick="removeFromMix('${type}')">✕</button>
+        <button class="track-remove" onclick="removeFromMix('${id}')">✕</button>
       </div>
       <div class="track-vol-row">
-        <input type="range" class="mini" min="0" max="100" value="${t.vol}" oninput="setTrackVol('${type}',this.value)"/>
-        <span id="tvol-${type}">${t.vol}</span>
+        <input type="range" class="mini" min="0" max="100" value="${t.vol}" oninput="setTrackVol('${id}',this.value)"/>
+        <span id="tvol-${k}">${t.vol}</span>
       </div>
     </div>`;
   }).join('');
 }
 
-function setTrackVol(type,v){
-  if(!mixTracks[type])return;
-  mixTracks[type].vol=parseInt(v);
-  mixTracks[type].gainNode.gain.setTargetAtTime(v/100*.8,getCtx().currentTime,.1);
-  document.getElementById('tvol-'+type).textContent=v;
+function setTrackVol(id,v){
+  if(!mixTracks[id])return;
+  mixTracks[id].vol=parseInt(v);
+  mixTracks[id].gainNode.gain.setTargetAtTime(v/100*.8,getCtx().currentTime,.1);
+  document.getElementById('tvol-'+trackKey(id)).textContent=v;
 }
 
 function setMasterVol(v){
@@ -59,15 +80,15 @@ function setMasterVol(v){
 }
 
 const PRESETS={
-  'rain-night':[['rain','🌧️','Mưa nhẹ'],['thunder','⚡','Sấm xa']],
-  'deep-sleep':[['ocean','🌊','Sóng biển'],['pink','🌸','Pink Noise']],
-  'forest-fire':[['forest','🌿','Rừng đêm'],['fire','🔥','Lửa trại'],['wind','💨','Gió nhẹ']],
-  'focus':[['white','🔊','White Noise'],['stream','🏞️','Suối chảy']]
+  'rain-night':['rain/light-rain','rain/thunder','animals/crickets'],
+  'deep-sleep':['nature/waves','noise/brown-noise'],
+  'forest-fire':['nature/jungle','nature/campfire','animals/owl'],
+  'focus':['noise/white-noise','nature/river']
 };
 
 function loadPreset(name){
   Object.keys(mixTracks).forEach(removeFromMix);
-  PRESETS[name].forEach(([type,icon,n])=>setTimeout(()=>addToMix(type,icon,n),100));
+  PRESETS[name].forEach(id=>setTimeout(()=>addToMix(id),100));
 }
 
 let mixTimer=null;
@@ -101,4 +122,10 @@ function stopMixTimer(){
   if(mixTimer){clearTimeout(mixTimer);mixTimer=null}
   document.getElementById('mix-timer-display').style.display='none';
   document.querySelectorAll('.timer-chip').forEach(c=>c.classList.remove('active'));
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',renderSoundLibrary);
+} else {
+  renderSoundLibrary();
 }

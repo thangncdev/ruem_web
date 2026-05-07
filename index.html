@@ -11,13 +11,18 @@
 </head>
 <body>
 <canvas id="stars-canvas"></canvas>
+<div id="moon-orb"></div>
+<div id="fog-overlay"></div>
 <div id="app">
 
 <!-- ══ HOME ══ -->
 <div class="view active" id="view-home">
   <div class="home-header">
+    <div class="app-logo">
+      <img src="images/logo.png" alt="Ruem — Ngủ ngon tròn giấc"/>
+    </div>
     <p class="greeting" id="greeting-text">Chào buổi tối ✦</p>
-    <h1 class="display">Chúc ngủ ngon,<br/><em>hãy để cơ thể nghỉ ngơi.</em></h1>
+    <h1 class="display" id="display-text">Chúc ngủ ngon,<br/><em>hãy để cơ thể nghỉ ngơi.</em></h1>
   </div>
 
   <div class="card mb-24">
@@ -123,35 +128,7 @@
   </div>
 
   <p class="section-label">Thư viện âm thanh</p>
-  <div class="sound-library" id="sound-library">
-    <div class="sound-lib-item" data-sound="rain" onclick="addToMix('rain','🌧️','Mưa nhẹ')">
-      <div class="s-icon">🌧️</div><div class="s-name">Mưa nhẹ</div><div class="s-add">+ Thêm</div>
-    </div>
-    <div class="sound-lib-item" data-sound="ocean" onclick="addToMix('ocean','🌊','Sóng biển')">
-      <div class="s-icon">🌊</div><div class="s-name">Sóng biển</div><div class="s-add">+ Thêm</div>
-    </div>
-    <div class="sound-lib-item" data-sound="white" onclick="addToMix('white','🔊','White Noise')">
-      <div class="s-icon">🔊</div><div class="s-name">White Noise</div><div class="s-add">+ Thêm</div>
-    </div>
-    <div class="sound-lib-item" data-sound="forest" onclick="addToMix('forest','🌿','Rừng đêm')">
-      <div class="s-icon">🌿</div><div class="s-name">Rừng đêm</div><div class="s-add">+ Thêm</div>
-    </div>
-    <div class="sound-lib-item" data-sound="fire" onclick="addToMix('fire','🔥','Lửa trại')">
-      <div class="s-icon">🔥</div><div class="s-name">Lửa trại</div><div class="s-add">+ Thêm</div>
-    </div>
-    <div class="sound-lib-item" data-sound="pink" onclick="addToMix('pink','🌸','Pink Noise')">
-      <div class="s-icon">🌸</div><div class="s-name">Pink Noise</div><div class="s-add">+ Thêm</div>
-    </div>
-    <div class="sound-lib-item" data-sound="thunder" onclick="addToMix('thunder','⚡','Sấm xa')">
-      <div class="s-icon">⚡</div><div class="s-name">Sấm xa</div><div class="s-add">+ Thêm</div>
-    </div>
-    <div class="sound-lib-item" data-sound="wind" onclick="addToMix('wind','💨','Gió nhẹ')">
-      <div class="s-icon">💨</div><div class="s-name">Gió nhẹ</div><div class="s-add">+ Thêm</div>
-    </div>
-    <div class="sound-lib-item" data-sound="stream" onclick="addToMix('stream','🏞️','Suối chảy')">
-      <div class="s-icon">🏞️</div><div class="s-name">Suối chảy</div><div class="s-add">+ Thêm</div>
-    </div>
-  </div>
+  <div class="sound-library" id="sound-library"><!-- JS render --></div>
 
   <p class="section-label">Mix hiện tại</p>
   <div class="mix-tracks" id="mix-tracks">
